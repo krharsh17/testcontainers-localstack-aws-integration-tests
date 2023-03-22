@@ -1,15 +1,13 @@
-config:
+cloud:
   aws:
-    region: us-east-1
+    region:
+      static: us-east-1
     dynamodb:
       url: http://127.0.0.1:4566
       access-key: localstack
       secret-key: localstack
-      stack:
-        auto: false
-        enabled: false
 
 
 payment-handling:
-  payment-table: Payments
   payment-queue: payments-queue
+  payment-table: Payments

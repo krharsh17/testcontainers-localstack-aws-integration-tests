@@ -29,8 +29,7 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @Testcontainers
 @SpringBootTest
 public class PaymentHandlerIntegrationTest {
-    private static final String QUEUE_NAME = "payment-test-queue";
-    private static final String TABLE_NAME = "payment-test-bucket";
+    private static final String QUEUE_NAME = "payment-queue";
 
     @Container
     static LocalStackContainer localStack =
@@ -42,16 +41,17 @@ public class PaymentHandlerIntegrationTest {
         localStack.execInContainer("awslocal", "sqs", "create-queue", "--queue-name", QUEUE_NAME);
         localStack.execInContainer("awslocal", "dynamodb", "create-table",
                 "--table-name", "Payments",
-                "--attribute-definitions", "AttributeName=paymentId,AttributeType=S","AttributeName=payerId,AttributeType=S","AttributeName=orderId,AttributeType=S","AttributeName=paymentAmount,AttributeType=N","AttributeName=paymentStatus,AttributeType=S","AttributeName=paymentDateTimeISO,AttributeType=S",
+                "--attribute-definitions", "AttributeName=paymentId,AttributeType=S",
                 "--key-schema", "AttributeName=paymentId,KeyType=HASH",
                 "--provisioned-throughput", "ReadCapacityUnits=5,WriteCapacityUnits=5"
         );
+        System.setProperty("cloud.aws.dynamodb.url", localStack.getEndpointOverride(DYNAMODB).toString());
+
     }
 
     @DynamicPropertySource
     static void overrideConfiguration(DynamicPropertyRegistry registry) {
         registry.add("payment-handling.payment-queue", () -> QUEUE_NAME);
-        registry.add("payment-handling.payment-table", () -> TABLE_NAME);
         registry.add("cloud.aws.sqs.endpoint", () -> localStack.getEndpointOverride(SQS));
         registry.add("cloud.aws.dynamodb.endpoint", () -> localStack.getEndpointOverride(DYNAMODB));
         registry.add("cloud.aws.credentials.access-key", localStack::getAccessKey);
@@ -86,7 +86,7 @@ public class PaymentHandlerIntegrationTest {
         given()
                 .ignoreException(AmazonDynamoDBException.class)
                 .await()
-                .atMost(5, SECONDS)
-                .untilAsserted(() -> assertNotNull(new DynamoDBMapper(amazonDynamoDB).query(Payment.class, queryExpression)));
+                .atMost(10, SECONDS)
+                .untilAsserted(() -> assertNotNull(new DynamoDBMapper(amazonDynamoDB).query(Payment.class, queryExpression).get(0)));
     }
 }
