@@ -1,11 +1,9 @@
 package dev.draft.demo;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
@@ -19,12 +17,6 @@ public class SQSConfig {
     @Value("${cloud.aws.dynamodb.url}")         private String sqsEndpointUrl;
     @Value("${cloud.aws.dynamodb.access-key}")  private String accessKey;
     @Value("${cloud.aws.dynamodb.secret-key}")  private String secretKey;
-//    @Bean
-//    public MappingJackson2MessageConverter mappingJackson2MessageConverter(ObjectMapper objectMapper) {
-//        MappingJackson2MessageConverter jackson2MessageConverter = new MappingJackson2MessageConverter();
-//        jackson2MessageConverter.setObjectMapper(objectMapper);
-//        return jackson2MessageConverter;
-//    }
 
     @Bean
     public SqsAsyncClient sqsAsyncClient() {

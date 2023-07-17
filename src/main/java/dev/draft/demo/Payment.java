@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,21 +18,6 @@ public class Payment {
 
     public Payment() {
 
-    }
-
-    @JsonCreator
-    public Payment(@JsonProperty("paymentId") String paymentId,
-                   @JsonProperty("payerId") String payerId,
-                   @JsonProperty("orderId") String orderId,
-                   @JsonProperty("paymentAmount") float paymentAmount,
-                   @JsonProperty("paymentStatus") String paymentStatus,
-                   @JsonProperty("paymentDateTimeISO") String paymentDateTimeISO) {
-        this.paymentId = paymentId;
-        this.payerId = payerId;
-        this.orderId = orderId;
-        this.paymentAmount = paymentAmount;
-        this.paymentStatus = paymentStatus;
-        this.paymentDateTimeISO = paymentDateTimeISO;
     }
 
     @JsonCreator
