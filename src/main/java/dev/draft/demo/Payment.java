@@ -3,6 +3,10 @@ package dev.draft.demo;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @DynamoDBTable(tableName="Payments")
 public class Payment {
@@ -13,6 +17,36 @@ public class Payment {
     private String paymentStatus;
     private String paymentDateTimeISO;
 
+    public Payment() {
+
+    }
+
+    @JsonCreator
+    public Payment(@JsonProperty("paymentId") String paymentId,
+                   @JsonProperty("payerId") String payerId,
+                   @JsonProperty("orderId") String orderId,
+                   @JsonProperty("paymentAmount") float paymentAmount,
+                   @JsonProperty("paymentStatus") String paymentStatus,
+                   @JsonProperty("paymentDateTimeISO") String paymentDateTimeISO) {
+        this.paymentId = paymentId;
+        this.payerId = payerId;
+        this.orderId = orderId;
+        this.paymentAmount = paymentAmount;
+        this.paymentStatus = paymentStatus;
+        this.paymentDateTimeISO = paymentDateTimeISO;
+    }
+
+    @JsonCreator
+    public Payment(String json) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Payment payment = objectMapper.readValue(json, Payment.class);
+        this.paymentId = payment.paymentId;
+        this.payerId = payment.payerId;
+        this.orderId = payment.orderId;
+        this.paymentAmount = payment.paymentAmount;
+        this.paymentStatus = payment.paymentStatus;
+        this.paymentDateTimeISO = payment.paymentDateTimeISO;
+    }
 
     @DynamoDBHashKey(attributeName="paymentId")
     public String getPaymentId() {

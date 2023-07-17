@@ -2,7 +2,7 @@ package dev.draft.demo;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import io.awspring.cloud.messaging.listener.annotation.SqsListener;
+import io.awspring.cloud.sqs.annotation.SqsListener;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.messaging.handler.annotation.Payload;

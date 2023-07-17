@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AmazonDynamoDBException;
-import io.awspring.cloud.messaging.core.QueueMessagingTemplate;
+import io.awspring.cloud.sqs.operations.SqsTemplate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class PaymentHandlerIntegrationTest {
     private AmazonDynamoDB amazonDynamoDB;
 
     @Autowired
-    private QueueMessagingTemplate queueMessagingTemplate;
+    private SqsTemplate queueMessagingTemplate;
 
     @Test
     public void paymentShouldBeSavedToDBOnceConsumedFromQueue() {
