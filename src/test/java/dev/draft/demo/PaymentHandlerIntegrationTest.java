@@ -32,9 +32,7 @@ public class PaymentHandlerIntegrationTest {
     private static final String QUEUE_NAME = "payment-queue";
 
     @Container
-    static LocalStackContainer localStack =
-            new LocalStackContainer(DockerImageName.parse("localstack/localstack:0.13.0"))
-                    .withServices(DYNAMODB, SQS);
+    static LocalStackContainer localStack = new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.0"));
 
     @BeforeAll
     static void beforeAll() throws IOException, InterruptedException {
@@ -87,6 +85,7 @@ public class PaymentHandlerIntegrationTest {
                 .ignoreException(AmazonDynamoDBException.class)
                 .await()
                 .atMost(10, SECONDS)
+                .ignoreExceptions()
                 .untilAsserted(() -> assertNotNull(new DynamoDBMapper(amazonDynamoDB).query(Payment.class, queryExpression).get(0)));
     }
 }
