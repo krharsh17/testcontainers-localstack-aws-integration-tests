@@ -1,13 +1,13 @@
 package dev.draft.demo;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-@DynamoDBTable(tableName="Payments")
+@DynamoDbBean
 public class Payment {
     private String paymentId;
     private String payerId;
@@ -32,50 +32,56 @@ public class Payment {
         this.paymentDateTimeISO = payment.paymentDateTimeISO;
     }
 
-    @DynamoDBHashKey(attributeName="paymentId")
+    @DynamoDbPartitionKey
     public String getPaymentId() {
         return paymentId;
     }
+
     public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
     }
 
-    @DynamoDBAttribute(attributeName="payerId")
+    @DynamoDbAttribute("payerId")
     public String getPayerId() {
         return payerId;
     }
+
     public void setPayerId(String payerId) {
         this.payerId = payerId;
     }
 
-    @DynamoDBAttribute(attributeName="orderId")
+    @DynamoDbAttribute("orderId")
     public String getOrderId() {
         return orderId;
     }
+
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    @DynamoDBAttribute(attributeName="paymentAmount")
+    @DynamoDbAttribute("paymentAmount")
     public float getPaymentAmount() {
         return paymentAmount;
     }
+
     public void setPaymentAmount(float paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
-    @DynamoDBAttribute(attributeName="paymentStatus")
+    @DynamoDbAttribute("paymentStatus")
     public String getPaymentStatus() {
         return paymentStatus;
     }
+
     public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
-    @DynamoDBAttribute(attributeName="paymentDateTimeISO")
+    @DynamoDbAttribute("paymentDateTimeISO")
     public String getPaymentDateTimeISO() {
         return paymentDateTimeISO;
     }
+
     public void setPaymentDateTimeISO(String paymentDateTimeISO) {
         this.paymentDateTimeISO = paymentDateTimeISO;
     }
