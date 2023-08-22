@@ -8,14 +8,9 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class PaymentHandler {
     private static final Logger LOG = LoggerFactory.getLogger(PaymentHandler.class);
-
-    final List<Payment> payments = new ArrayList<>();
 
     DynamoDbClient dynamoDbClient;
 
@@ -26,8 +21,6 @@ public class PaymentHandler {
     @SqsListener("payment-queue")
     public void handlePayment(Payment payment) {
         LOG.info("Payment details received: " + payment.toString());
-
-        payments.add(payment);
 
         DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
 
